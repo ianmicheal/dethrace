@@ -17799,7 +17799,7 @@ MA_API ma_result ma_job_queue_next(ma_job_queue* pQueue, ma_job* pJob)
 }
 
 #ifdef __DREAMCAST__
-#define MA_NO_RUNTIME_LINKING =1
+#define MA_NO_RUNTIME_LINKING 1
 #endif
 /*******************************************************************************
 
