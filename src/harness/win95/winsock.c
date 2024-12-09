@@ -1,5 +1,9 @@
 #include "harness/winsock.h"
 
+#ifndef FIONBIO
+#define FIONBIO 0x2000  // or some other appropriate value
+#endif
+
 #ifndef _WIN32
 
 int WSAStartup(int version, WSADATA* data) {

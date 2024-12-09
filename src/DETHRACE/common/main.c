@@ -106,7 +106,10 @@ void ServiceGameInRace(void) {
 // IDA: void __usercall GameMain(int pArgc@<EAX>, char **pArgv@<EDX>)
 void GameMain(int pArgc, char** pArgv) {
     tPath_name CD_dir;
-
+#ifdef __DREAMCAST__    
+    gAustere_override =1;
+    gReplay_override = 1;
+#endif    
     PDSetFileVariables();
     PDBuildAppPath(gApplication_path);
     OpenDiagnostics();

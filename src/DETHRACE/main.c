@@ -1,5 +1,27 @@
 
 #include <stdlib.h>
+#ifdef __DREAMCAST__
+#include <kos.h>
+#include "brender.h"
+void * BR_RESIDENT_ENTRY HostImageLoad(char *name)
+{
+	return NULL;
+}
+
+void BR_RESIDENT_ENTRY HostImageUnload(void *image)
+{
+}
+
+void * BR_RESIDENT_ENTRY HostImageLookupName(void *img, char *name, br_uint_32 hint)
+{
+	return NULL;
+}
+
+void * BR_RESIDENT_ENTRY HostImageLookupOrdinal(void *img, br_uint_32 ordinal)
+{
+	return NULL;
+}
+#endif
 
 #ifdef _WIN32
 #include <io.h>
@@ -16,8 +38,8 @@ void BR_CALLBACK _BrBeginHook(void) {
     struct br_device* BR_EXPORT BrDrv1SoftPrimBegin(char* arguments);
     struct br_device* BR_EXPORT BrDrv1SoftRendBegin(char* arguments);
 
-    BrDevAddStatic(NULL, BrDrv1SoftPrimBegin, NULL);
-    BrDevAddStatic(NULL, BrDrv1SoftRendBegin, NULL);
+    BrDevAddStatic(NULL, (br_device_begin_fn *)BrDrv1SoftPrimBegin, NULL);
+    BrDevAddStatic(NULL, (br_device_begin_fn *)BrDrv1SoftRendBegin, NULL);
     // BrDevAddStatic(NULL, BrDrv1SDL2Begin, NULL);
 }
 
@@ -42,7 +64,9 @@ int main(int argc, char* argv[]) {
         }
     }
 #endif
-
+#ifdef __DREAMCAST__
+    fs_chdir("/cd/dethrace");
+#endif    
     Harness_Init(&argc, argv);
 
     return original_main(argc, argv);

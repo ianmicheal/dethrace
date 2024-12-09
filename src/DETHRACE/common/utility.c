@@ -536,7 +536,7 @@ br_uintptr_t CompareActorID(br_actor* pActor, void* pArg) {
 br_actor* DRActorFindRecurse(br_actor* pSearch_root, char* pName) {
     LOG_TRACE("(%p, \"%s\")", pSearch_root, pName);
 
-    return (br_actor*)DRActorEnumRecurse(pSearch_root, CompareActorID, pName);
+    return (br_actor*)DRActorEnumRecurse(pSearch_root, (br_actor_enum_cbfn *)CompareActorID, pName);
 }
 
 // IDA: br_uint_32 __usercall DRActorEnumRecurseWithMat@<EAX>(br_actor *pActor@<EAX>, br_material *pMat@<EDX>, br_uint_32 (*pCall_back)(br_actor*, br_material*, void*)@<EBX>, void *pArg@<ECX>)

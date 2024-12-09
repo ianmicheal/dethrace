@@ -12,6 +12,28 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#ifdef __DREAMCAST__
+#include <unistd.h>
+#include <kos.h>
+
+int access(const char *pathname, int mode) {
+    file_t fd;
+    int ret = 0;
+
+    /* Check if the file exists and can be opened for reading */
+    fd = fs_open(pathname, O_RDONLY);
+    if (fd >= 0) {
+        /* File exists and can be read */
+        fs_close(fd);
+    } else {
+        /* File doesn't exist or can't be read */
+        ret = -1;
+    }
+
+    return ret;
+}
+#endif
+
 br_pixelmap* palette;
 uint32_t* screen_buffer;
 
@@ -139,7 +161,7 @@ void Harness_Init(int* argc, char* argv[]) {
     printf("Dethrace version: %s\n", DETHRACE_VERSION);
 
     memset(&harness_game_info, 0, sizeof(harness_game_info));
-
+    printf("GPF WAS HERE!!\n");
     // disable the original CD check code
     harness_game_config.enable_cd_check = 0;
     // original physics time step. Lower values seem to work better at 30+ fps
@@ -174,11 +196,15 @@ void Harness_Init(int* argc, char* argv[]) {
         OS_InstallSignalHandler(argv[0]);
     }
 
+#ifdef __DREAMCAST__
+    char* root_dir = "/cd/dethrace/";
+#else
     char* root_dir = getenv("DETHRACE_ROOT_DIR");
+#endif
     if (root_dir != NULL) {
         LOG_INFO("DETHRACE_ROOT_DIR is set to '%s'", root_dir);
     } else {
-        root_dir = OS_GetWorkingDirectory(argv[0]);
+        root_dir = OS_GetWorkingDirectory("argv[0]");
     }
     // if root_dir is null or empty, no need to chdir
     if (root_dir != NULL && root_dir[0] != '\0') {

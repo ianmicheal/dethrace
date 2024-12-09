@@ -2567,15 +2567,15 @@ void LoadRaceInfo(int pRace_index, tRace_info* pRace_info) {
     PossibleService();
     if (!gNet_mode) {
         if (!LoadFlicData(str, &pRace_info->scene_image_data, &pRace_info->scene_image_data_length)) {
-            FatalError(kFatalError_LoadRaceSceneImage);
+            // FatalError(kFatalError_LoadRaceSceneImage);
         }
         str = strtok(0, "\t ,/");
         if (!LoadFlicData(str, &pRace_info->map_image_data, &pRace_info->map_image_data_length)) {
-            FatalError(kFatalError_LoadRaceMapImage);
+            // FatalError(kFatalError_LoadRaceMapImage);
         }
         str = strtok(0, "\t ,/");
         if (!LoadFlicData(str, &pRace_info->info_image_data, &pRace_info->info_image_data_length)) {
-            FatalError(kFatalError_loadRaceInfoImage);
+            // FatalError(kFatalError_loadRaceInfoImage);
         }
         for (i = 0; i < pRace_info->number_of_racers; i++) {
             PossibleService();
@@ -2788,7 +2788,8 @@ br_font* LoadBRFont(char* pName) {
     fread(the_font->encoding, data_size, 1u, f);
 #if !BR_ENDIAN_BIG
     for (i = 0; i < 256; i++) {
-        the_font->encoding[i] = the_font->encoding[i] >> 8 | the_font->encoding[i] << 8;
+        const br_uint_8 temp = ((uint16_t)(*(the_font->encoding + i)) >> 8) | ((uint16_t)(*(the_font->encoding + i)) << 8);
+        the_font->encoding[i] = (br_uint_16)temp;
     }
 #endif
     PossibleService();

@@ -510,10 +510,10 @@ void PDAllocateScreenAndBack(void) {
     // this is a mix of windows and dos code
 
     dr_dprintf("PDAllocateScreenAndBack() - START...");
-    BrMaterialFindHook(PDMissingMaterial);
-    BrTableFindHook(PDMissingTable);
-    BrModelFindHook(PDMissingModel);
-    BrMapFindHook(PDMissingMap);
+    BrMaterialFindHook((br_material_find_cbfn *)PDMissingMaterial);
+    BrTableFindHook((br_table_find_cbfn *)PDMissingTable);
+    BrModelFindHook((br_model_find_cbfn *)PDMissingModel);
+    BrMapFindHook((br_map_find_cbfn *)PDMissingMap);
 
     int row_bytes;
     SSDXInitDirectDraw(gGraf_specs[gGraf_spec_index].total_width, gGraf_specs[gGraf_spec_index].total_height, &row_bytes);
@@ -670,8 +670,8 @@ void PDInstallErrorHandlers(void) {
     LOG_TRACE("()");
 
     gWin32_br_diaghandler.identifier = "LlantisilioBlahBlahBlahOgOgOch";
-    gWin32_br_diaghandler.warning = Win32BRenderWarningFunc;
-    gWin32_br_diaghandler.failure = Win32BRenderFailureFunc;
+    gWin32_br_diaghandler.warning = (void (*)(char *))Win32BRenderWarningFunc;
+    gWin32_br_diaghandler.failure = (void (*)(char *))Win32BRenderFailureFunc;
     BrDiagHandlerSet(&gWin32_br_diaghandler);
 }
 

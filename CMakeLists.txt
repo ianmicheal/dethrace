@@ -57,7 +57,11 @@ function(add_compile_flags_if_supported TARGET)
     endforeach()
 endfunction()
 
+IF (NOT DREAMCAST)
 test_big_endian(IS_BIGENDIAN)
+else()
+set(IS_BIGENDIAN 0)
+endif()
 
 find_package(SDL2 CONFIG)
 if(NOT SDL2_FOUND)

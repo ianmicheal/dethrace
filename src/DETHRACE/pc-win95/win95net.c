@@ -170,7 +170,7 @@ int ReceiveHostResponses(void) {
 
     sa_len = sizeof(gRemote_addr);
     while (1) {
-        if (recvfrom(gSocket, gReceive_buffer, sizeof(gReceive_buffer), 0, (struct sockaddr*)&gRemote_addr, &sa_len) == -1) {
+        if (recvfrom(gSocket, gReceive_buffer, sizeof(gReceive_buffer), 0, (struct sockaddr*)&gRemote_addr, (socklen_t *)&sa_len) == -1) {
             break;
         }
         NetNowIPXLocalTarget2String(addr_string, gRemote_addr_ipx);
@@ -239,7 +239,13 @@ int BroadcastMessage(void) {
     }
     return errors == 0;
 }
-
+#ifdef __DREAMCAST__
+#define FIONBIO 0x2000  // or some other appropriate value
+struct linger {
+    u_short l_onoff;   // Option on/off
+    u_short l_linger;  // Linger time in seconds
+};
+#endif
 // IDA: int __cdecl PDNetInitialise()
 int PDNetInitialise(void) {
     tU32 timenow;
@@ -343,7 +349,7 @@ int PDNetInitialise(void) {
         }
     }
 
-    int res = getsockname(gSocket, (struct sockaddr*)&gLocal_addr, &sa_len);
+    int res = getsockname(gSocket, (struct sockaddr*)&gLocal_addr, (socklen_t *)&sa_len);
     NetNowIPXLocalTarget2String(gLocal_ipx_addr_string, gLocal_addr_ipx);
     // gNetworks[0] = *(tIPX_netnum*)gLocal_addr_ipx->sa_netnum;
     gNumber_of_networks = 1;
@@ -517,7 +523,14 @@ tPlayer_ID PDNetExtractPlayerID(tNet_game_details* pDetails) {
     dr_dprintf("PDNetExtractPlayerID()");
     return ntohs(gLocal_addr_ipx->sin_port);
 }
-
+#ifdef __DREAMCAST__
+#include <string.h>
+int gethostname(char *name, size_t len)
+{
+    strcpy(name, "dreamcast");  // Set the hostname to "dreamcast" 
+return 0;
+}
+#endif
 // IDA: void __usercall PDNetObtainSystemUserName(char *pName@<EAX>, int pMax_length@<EDX>)
 void PDNetObtainSystemUserName(char* pName, int pMax_length) {
     int result;
@@ -580,7 +593,7 @@ tNet_message* PDNetGetNextMessage(tNet_game_details* pDetails, void** pSender_ad
     sa_len = sizeof(gRemote_addr);
     msg = NetAllocateMessage(512);
     receive_buffer = (char*)msg;
-    res = recvfrom(gSocket, receive_buffer, 512, 0, (struct sockaddr*)&gRemote_addr, &sa_len);
+    res = recvfrom(gSocket, receive_buffer, 512, 0, (struct sockaddr*)&gRemote_addr, (socklen_t *)&sa_len);
     res = res != -1;
     if (res == 0) {
         res = WSAGetLastError() != WSAEWOULDBLOCK;

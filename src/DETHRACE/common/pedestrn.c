@@ -131,10 +131,10 @@ int gCurrent_ped_multiplier;
 void PedModelUpdate(br_model* pModel, br_scalar x0, br_scalar y0, br_scalar x1, br_scalar y1, br_scalar x2, br_scalar y2, br_scalar x3, br_scalar y3) {
     LOG_TRACE("(%p, %f, %f, %f, %f, %f, %f, %f, %f)", pModel, x0, y0, x1, y1, x2, y2, x3, y3);
 
-    BrVector2Set(&pModel->vertices[0].p, x0, y0);
-    BrVector2Set(&pModel->vertices[1].p, x1, y1);
-    BrVector2Set(&pModel->vertices[2].p, x2, y2);
-    BrVector2Set(&pModel->vertices[3].p, x3, y3);
+    BrVector2Set((br_vector2 *)&pModel->vertices[0].p, x0, y0);
+    BrVector2Set((br_vector2 *)&pModel->vertices[1].p, x1, y1);
+    BrVector2Set((br_vector2 *)&pModel->vertices[2].p, x2, y2);
+    BrVector2Set((br_vector2 *)&pModel->vertices[3].p, x3, y3);
     BrModelUpdate(pModel, BR_MATF_I_FROM_U);
 }
 
@@ -3466,7 +3466,7 @@ void DisposePedPaths(void) {
     LOG_TRACE("()");
 
     if (gPath_actor != NULL) {
-        DRActorEnumRecurse(gPath_actor, KillActorsModel, NULL);
+        DRActorEnumRecurse(gPath_actor, (br_actor_enum_cbfn *)KillActorsModel, NULL);
         BrActorRemove(gPath_actor);
         BrActorFree(gPath_actor);
         BrMaterialRemove(gPath_mat_normal);

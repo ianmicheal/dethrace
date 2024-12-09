@@ -1578,6 +1578,7 @@ int LoadFlicData(char* pName, tU8** pData, tU32* pData_length) {
     PossibleService();
     PathCat(the_path, gApplication_path, "ANIM");
     PathCat(the_path, the_path, pName);
+    LOG_TRACE("(\"%s\", %p, %p)", the_path, pData, pData_length);
     f = DRfopen(the_path, "rb");
     if (f == NULL) {
         return 0;

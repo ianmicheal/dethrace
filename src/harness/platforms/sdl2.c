@@ -20,16 +20,17 @@ uint8_t directinput_key_state[SDL_NUM_SCANCODES];
 static void* create_window_and_renderer(char* title, int x, int y, int width, int height) {
     render_width = width;
     render_height = height;
-
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    SDL_SetHint(SDL_HINT_VIDEO_DOUBLE_BUFFER, "1");
+    if (SDL_Init(SDL_INIT_VIDEO| SDL_INIT_JOYSTICK|SDL_INIT_AUDIO | SDL_INIT_EVENTS) != 0) {
         LOG_PANIC("SDL_INIT_VIDEO error: %s", SDL_GetError());
     }
-
+        SDL_SetHint(SDL_HINT_DC_VIDEO_MODE, "SDL_DC_TEXTURED_VIDEO");
+        // SDL_SetHint(SDL_HINT_DC_VIDEO_MODE, "SDL_DC_DIRECT_VIDEO"); 
     window = SDL_CreateWindow(title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         width, height,
-        SDL_WINDOW_RESIZABLE);
+        SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     if (window == NULL) {
         LOG_PANIC("Failed to create window: %s", SDL_GetError());
@@ -60,12 +61,14 @@ static void* create_window_and_renderer(char* title, int x, int y, int width, in
 }
 
 static int set_window_pos(void* hWnd, int x, int y, int nWidth, int nHeight) {
+#ifndef __DREAAMCAST__    
     // SDL_SetWindowPosition(hWnd, x, y);
     if (nWidth == 320 && nHeight == 200) {
         nWidth = 640;
         nHeight = 400;
     }
     SDL_SetWindowSize(hWnd, nWidth, nHeight);
+#endif    
     return 0;
 }
 
@@ -87,12 +90,15 @@ static int get_and_handle_message(MSG_* msg) {
     int dinput_key;
 
     while (SDL_PollEvent(&event)) {
+
         switch (event.type) {
+                       
         case SDL_KEYDOWN:
         case SDL_KEYUP:
-            if (event.key.windowID != SDL_GetWindowID(window)) {
-                continue;
-            }
+            // if (event.key.windowID != SDL_GetWindowID(window)) {
+            //     continue;
+            // }
+        printf("key: %s\n",event.key.keysym.sym);
             if (event.key.keysym.sym == SDLK_RETURN) {
                 if (event.key.type == SDL_KEYDOWN) {
                     if ((event.key.keysym.mod & (KMOD_CTRL | KMOD_SHIFT | KMOD_ALT | KMOD_GUI))) {

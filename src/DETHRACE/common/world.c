@@ -2922,7 +2922,7 @@ br_uintptr_t RemoveBounds(br_actor* pActor, void* pArg) {
 void RemoveBoundsStructures(br_actor* pActor) {
     LOG_TRACE("(%p)", pActor);
 
-    DRActorEnumRecurse(pActor, RemoveBounds, NULL);
+    DRActorEnumRecurse(pActor, (br_actor_enum_cbfn*)RemoveBounds, NULL);
 }
 
 // IDA: void __usercall FreeTrack(tTrack_spec *pTrack_spec@<EAX>)
