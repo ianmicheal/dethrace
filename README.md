@@ -118,3 +118,7 @@ Dethrace and any of its' maintainers are in no way associated with or endorsed b
 # DREAMCAST build, requires dreamcast SDL2 from https://github.com/GPF/SDL2
 cmake   -DCMAKE_TOOLCHAIN_FILE="$KOS_CMAKE_TOOLCHAIN" -DSDL2_DIR="/opt/toolchains/dc/kos/addons/lib/dreamcast/cmake/SDL2"   -DSDL2_INCLUDE_DIRS="/opt/toolchains/dc/kos/addons/include/SDL2"   -DSDL2_LIBRARIES="/opt/toolchains/dc/kos/addons/lib/dreamcast/libSDL2.a;/opt/toolchains/dc/kos/addons/lib/dreamcast/libSDL2main.a"   -Bbuild
 currently only is running in dreamcast emulators with 32mb memory expansion, still debugging an issue with the BRender V1Model_Render.
+
+
+https://github.com/user-attachments/assets/fc29003d-0656-44ca-b32e-87f599df02a1
+
