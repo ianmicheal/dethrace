@@ -815,7 +815,11 @@ void Win32AllocateActionReplayBuffer(void) {
         mem_status.dwTotalVirtual,
         mem_status.dwAvailVirtual);
 
+#ifdef __DREAMCAST__
+    buf_size = 500000;
+#else    
     buf_size = 20000000;
+#endif
 
     if (mem_status.dwTotalPhys < 16000000) {
         buf_size = 500000;
@@ -957,6 +961,11 @@ int original_main(int pArgc, char** pArgv) {
             Usage(pArgv[0]);
         }
     }
+    // gCar_simplification_level = 0;
+    // gCut_scene_override = 1;
+    // gReplay_override = 1;
+    // gSound_override = 1;
+    // gAustere_override = 1;
 
     gNetwork_profile_fname[0] = 0;
     uint32_t len = GetCurrentDirectoryA_(240, gNetwork_profile_fname);

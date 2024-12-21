@@ -7,7 +7,10 @@ target_include_directories(s3
 
 target_link_libraries(s3 PRIVATE brender SDL2::SDL2 harness compile_with_werror)
 
-if(NOT MSVC AND NOT DREAMCAST)
+if(__DREAMCAST__)
+    # Dreamcast-specific configuration
+    target_link_libraries(s3 PUBLIC m)  # Include math library only
+elseif(NOT MSVC AND NOT __DREAMCAST__)
     target_link_libraries(s3 PUBLIC pthread m)
     add_compile_flags_if_supported(s3
         -Wstrict-prototypes

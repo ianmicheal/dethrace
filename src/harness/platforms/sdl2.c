@@ -98,7 +98,7 @@ static int get_and_handle_message(MSG_* msg) {
             // if (event.key.windowID != SDL_GetWindowID(window)) {
             //     continue;
             // }
-        printf("key: %s\n",event.key.keysym.sym);
+        // printf("key: %s\n",event.key.keysym.sym);
             if (event.key.keysym.sym == SDLK_RETURN) {
                 if (event.key.type == SDL_KEYDOWN) {
                     if ((event.key.keysym.mod & (KMOD_CTRL | KMOD_SHIFT | KMOD_ALT | KMOD_GUI))) {

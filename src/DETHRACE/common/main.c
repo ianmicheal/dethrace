@@ -107,8 +107,8 @@ void ServiceGameInRace(void) {
 void GameMain(int pArgc, char** pArgv) {
     tPath_name CD_dir;
 #ifdef __DREAMCAST__    
-    gAustere_override =1;
-    gReplay_override = 1;
+    // gAustere_override =1;
+    // gReplay_override = 1;
 #endif    
     PDSetFileVariables();
     PDBuildAppPath(gApplication_path);

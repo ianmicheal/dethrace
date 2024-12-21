@@ -191,11 +191,11 @@ void Harness_Init(int* argc, char* argv[]) {
     harness_game_config.install_signalhandler = 1;
 
     Harness_ProcessCommandLine(argc, argv);
-
+#ifndef __DREAMCAST__
     if (harness_game_config.install_signalhandler) {
         OS_InstallSignalHandler(argv[0]);
     }
-
+#endif
 #ifdef __DREAMCAST__
     char* root_dir = "/cd/dethrace/";
 #else

@@ -57,7 +57,7 @@ function(add_compile_flags_if_supported TARGET)
     endforeach()
 endfunction()
 
-IF (NOT DREAMCAST)
+IF (NOT __DREAMCAST__)
 test_big_endian(IS_BIGENDIAN)
 else()
 set(IS_BIGENDIAN 0)
