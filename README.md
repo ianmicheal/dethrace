@@ -115,6 +115,11 @@ The source code in this repository is for non-commerical use only. If you use th
 
 Dethrace and any of its' maintainers are in no way associated with or endorsed by SCi, Stainless Software or THQ Nordic.
 
+# Update steps 
+git clone [https://github.com/dethrace-labs/dethrace](https://github.com/GPF/dethrace)
+cd dethrace
+git submodule update --init --recursive
+
 # DREAMCAST build, requires dreamcast SDL2 from https://github.com/GPF/SDL2 , KOS built with -m4-single
 cmake   -DCMAKE_TOOLCHAIN_FILE="$KOS_CMAKE_TOOLCHAIN" -D__DREAMCAST__=1 -DSDL2_DIR="/opt/toolchains/dc/kos/addons/lib/dreamcast/cmake/SDL2"   -DSDL2_INCLUDE_DIRS="/opt/toolchains/dc/kos/addons/include/SDL2"   -DSDL2_LIBRARIES="/opt/toolchains/dc/kos/addons/lib/dreamcast/libSDL2.a;/opt/toolchains/dc/kos/addons/lib/dreamcast/libSDL2main.a"   -Bbuild
 
